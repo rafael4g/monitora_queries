@@ -1,13 +1,14 @@
 @echo off
 
-title Robo Extracao 'Pl/Sql'
-CD _rsi2
+title PEGAR ARQUIVO
+
+SET PATHLOCALARQUIVOS="X:\_rsi2"
+pushd %PATHLOCALARQUIVOS%
 
 cls
 :main
 
 FOR %%A IN (*.txt) DO CALL :process %%A
-
 
 :process
 SET arquivo_original=%1
@@ -33,260 +34,34 @@ call set n_anomes=%%arquivo_original:~%new_length%,6%%
 call set n_arquivo=%%arquivo_original:~0,%new_length_arquivo%%%
 call set n_ext=%%arquivo_original:~%new_length_ext%,3%%
 
-IF "%n_ext%" EQU "txt" (
-goto timed
-) ELSE (goto end)
-
-goto :eof
+IF "%n_ext%" EQU "txt" GOTO timed
 
 :timed
-timeout 1
-IF "%1" NEQ "" (
-IF %n_ext% EQU txt IF %n_arquivo:~0,2% NEQ P- ( 
-echo %1
+IF "%1"=="" set set novo=0%1& Goto livrar
+
+IF %n_ext% EQU txt goto valida
+
 IF NOT EXIST %1 goto end
-del /q %1  
-start call D:\Dados\bat-project\get_information.bat %n_arquivo% %n_anomes%
-goto main
-) 
+
+:valida
+timeout 1
+IF %n_ext% EQU txt (
+IF EXIST %1.ini goto end
+IF NOT EXIST %1 goto end
+del /q %1
+copy NUL %arquivo_original%.ini
+start /min call C:\Dados\colab\monitora\get_information.bat %n_arquivo% %n_anomes%
+EXIT
 )
+
+:livrar
+echo sair %novo%
+exit
 
 :end
 EXIT
 
-
-
-
-::IF %n_arquivo% EQU AA_GROSS (     
-::    del /q %1
-::    copy NUL P-%arquivo_original% 
-::    goto main            
-::) 
-::
-::IF %n_arquivo% EQU AA_PORTABILIDADE (     
-::    del /q %1
-::    copy NUL P-%arquivo_original% 
-::    goto main               
-::) 
-::
-::IF %n_arquivo% EQU GROSS_REGIONAIS (     
-::    del /q %1
-::    copy NUL P-%arquivo_original% 
-::    goto main               
-::) 
-::
-::IF %n_arquivo% EQU MASTERATP_REGIONAIS (     
-::    del /q %1
-::    copy NUL P-%arquivo_original% 
-::    goto main               
-::) 
-::
-::IF %n_arquivo% EQU MIGRA_RSI (     
-::    del /q %1
-::    copy NUL P-%arquivo_original% 
-::    goto main               
-::) 
-::
-::IF %n_arquivo% EQU MKT_CHURN (     
-::    del /q %1
-::    copy NUL P-%arquivo_original% 
-::    goto main               
-::) 
-::
-::IF %n_arquivo% EQU PEP_GROSS_RSI (     
-::    del /q %1
-::    copy NUL P-%arquivo_original% 
-::    goto main               
-::) 
-::
-::IF %n_arquivo% EQU PEP_MASTER_RSI (     
-::    del /q %1
-::    copy NUL P-%arquivo_original% 
-::    goto main               
-::) 
-::
-::IF %n_arquivo% EQU PEP_MIGRA_RSI (     
-::    del /q %1
-::    copy NUL P-%arquivo_original% 
-::    goto main               
-::) 
-::
-::IF %n_arquivo% EQU PEP_MIX_CONTA (     
-::    del /q %1
-::    copy NUL P-%arquivo_original% 
-::    goto main               
-::) 
-::
-::IF %n_arquivo% EQU PEP_MIX_CONTROLE (     
-::    del /q %1
-::    copy NUL P-%arquivo_original% 
-::    goto main               
-::) 
-::
-::IF %n_arquivo% EQU PEP_PORTABILIDADE_NTC_VEND (     
-::    del /q %1
-::    copy NUL P-%arquivo_original% 
-::    goto main               
-::) 
-::
-::IF %n_arquivo% EQU PEP_RECARGA_INSERCAO_PRE_II (     
-::    del /q %1
-::    copy NUL P-%arquivo_original% 
-::    goto main               
-::) 
-::
-::IF %n_arquivo% EQU PME_CHURN (     
-::    del /q %1
-::    copy NUL P-%arquivo_original% 
-::    goto main               
-::) 
-::
-::IF %n_arquivo% EQU PME_GROSS (     
-::    del /q %1
-::    copy NUL P-%arquivo_original% 
-::    goto main               
-::) 
-::
-::IF %n_arquivo% EQU PME_MIG_IN (     
-::    del /q %1
-::    copy NUL P-%arquivo_original% 
-::    goto main               
-::) 
-::
-::IF %n_arquivo% EQU PME_MIG_OUT (     
-::    del /q %1
-::    copy NUL P-%arquivo_original% 
-::    goto main               
-::) 
-::
-::IF %n_arquivo% EQU PME_PORTABILIDADE (     
-::    del /q %1
-::    copy NUL P-%arquivo_original% 
-::    goto main               
-::) 
-::
-::IF %n_arquivo% EQU PME_PS8 (     
-::    del /q %1
-::    copy NUL P-%arquivo_original% 
-::    goto main               
-::) 
-::
-::IF %n_arquivo% EQU PORTABILIDADE_REGIONAIS (     
-::    del /q %1
-::    copy NUL P-%arquivo_original% 
-::    goto main               
-::) 
-::
-::IF %n_arquivo% EQU PORTABILIDADE_RSI (     
-::    del /q %1
-::    copy NUL P-%arquivo_original% 
-::    goto main               
-::) 
-::
-::IF %n_arquivo% EQU RECARGA_COMBO_PRE (     
-::    del /q %1
-::    copy NUL P-%arquivo_original% 
-::    goto main               
-::) 
-::
-::IF %n_arquivo% EQU RECARGA_D1 (     
-::    del /q %1
-::    copy NUL P-%arquivo_original% 
-::    goto main               
-::) 
-::
-::IF %n_arquivo% EQU RECARGA_GROSS_PRE (     
-::    del /q %1
-::    copy NUL P-%arquivo_original% 
-::    goto main               
-::) 
-::
-::IF %n_arquivo% EQU RECARGA_INSERCAO (     
-::    del /q %1
-::    copy NUL P-%arquivo_original% 
-::    goto main               
-::) 
-::
-::IF %n_arquivo% EQU RECARGA_INSERCAO_PRE_II (     
-::    del /q %1
-::    copy NUL P-%arquivo_original% 
-::    goto main               
-::) 
-::
-::IF %n_arquivo% EQU RECARGA_INSERIDORES (     
-::    del /q %1
-::    copy NUL P-%arquivo_original% 
-::    goto main               
-::) 
-::
-::IF %n_arquivo% EQU RECARGA_PORTABILIDADE (     
-::    del /q %1
-::    copy NUL P-%arquivo_original% 
-::    goto main               
-::) 
-::
-::IF %n_arquivo% EQU RECARGA_QUALIDADE_D1D30D60_SILENT (     
-::    del /q %1
-::    copy NUL P-%arquivo_original% 
-::    goto main               
-::) 
-::
-::IF %n_arquivo% EQU UPDOWN_RSI (     
-::    del /q %1
-::    copy NUL P-%arquivo_original% 
-::    goto main               
-::) 
-::
-::IF %n_arquivo% EQU VAREJO_GROSS (     
-::    del /q %1
-::    copy NUL P-%arquivo_original% 
-::    goto main               
-::) 
-::
-::IF %n_arquivo% EQU VAREJO_INSERCAO (     
-::    del /q %1
-::    copy NUL P-%arquivo_original% 
-::    goto main               
-::) 
-::
-::IF %n_arquivo% EQU VAREJO_MIGRA_TRAF (     
-::    del /q %1
-::    copy NUL P-%arquivo_original% 
-::    goto main               
-::) 
-::
-::IF %n_arquivo% EQU VAREJO_PORTABILIDADE (     
-::    del /q %1
-::    copy NUL P-%arquivo_original% 
-::    goto main               
-::) 
-::
-::IF %n_arquivo% EQU VAREJO_TRAFEGO (     
-::    del /q %1
-::    copy NUL P-%arquivo_original% 
-::    goto main               
-::) 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-::pause
-
-::start call D:\Dados\bat-project\teste3.bat %1
-::start call D:\Dados\bat-project\teste3.bat %1
-
-::pause > nul
-
+goto :eof
 ::EQU – Igual a
 ::NEQ - Não é igual a
 ::LSS – Menor que
